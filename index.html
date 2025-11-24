@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>창현이에게 하고싶은말</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" id="closeAuthModal">&times;</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">로그인</button>
+                <button class="auth-tab" data-tab="signup">회원가입</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <h2>로그인</h2>
+                <form id="loginFormElement">
+                    <div class="auth-form-group">
+                        <label for="loginEmail">이메일</label>
+                        <input type="email" id="loginEmail" placeholder="이메일을 입력하세요" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="loginPassword">비밀번호</label>
+                        <input type="password" id="loginPassword" placeholder="비밀번호를 입력하세요" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">로그인</button>
+                </form>
+                <div id="loginError" class="auth-error"></div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signupForm" class="auth-form">
+                <h2>회원가입</h2>
+                <form id="signupFormElement">
+                    <div class="auth-form-group">
+                        <label for="signupName">이름</label>
+                        <input type="text" id="signupName" placeholder="이름을 입력하세요" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupEmail">이메일</label>
+                        <input type="email" id="signupEmail" placeholder="이메일을 입력하세요" required>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupPassword">비밀번호</label>
+                        <input type="password" id="signupPassword" placeholder="비밀번호를 입력하세요 (최소 6자)" required minlength="6">
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupPasswordConfirm">비밀번호 확인</label>
+                        <input type="password" id="signupPasswordConfirm" placeholder="비밀번호를 다시 입력하세요" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">회원가입</button>
+                </form>
+                <div id="signupError" class="auth-error"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Info -->
+    <div class="user-info-bar">
+        <div class="user-info-content">
+            <span id="userDisplayName" class="user-name"></span>
+            <button id="logoutBtn" class="logout-btn" style="display: none;">로그아웃</button>
+            <div class="auth-buttons" id="authButtons" style="display: flex; gap: 0.5rem;">
+                <button id="loginBtn" class="login-btn">로그인</button>
+                <button id="signupBtn" class="signup-btn">회원가입</button>
+            </div>
+            <button id="adminBtn" class="admin-btn" style="display: none;">관리자</button>
+            <button id="createFirstAdminBtn" class="create-admin-btn" style="display: none;">첫 관리자 생성</button>
+        </div>
+    </div>
+
+    <!-- First Admin Modal -->
+    <div id="firstAdminModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" id="closeFirstAdminModal">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">첫 관리자 생성</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-gray);">시스템에 관리자가 없습니다. 첫 관리자 계정을 생성해주세요.</p>
+            <form id="firstAdminForm">
+                <div class="auth-form-group">
+                    <label for="firstAdminEmail">관리자 이메일</label>
+                    <input type="email" id="firstAdminEmail" placeholder="관리자 이메일" required>
+                </div>
+                <div class="auth-form-group">
+                    <label for="firstAdminPassword">비밀번호</label>
+                    <input type="password" id="firstAdminPassword" placeholder="비밀번호 (최소 6자)" required minlength="6">
+                </div>
+                <div class="auth-form-group">
+                    <label for="firstAdminPasswordConfirm">비밀번호 확인</label>
+                    <input type="password" id="firstAdminPasswordConfirm" placeholder="비밀번호를 다시 입력하세요" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">관리자 생성</button>
+            </form>
+            <div id="firstAdminError" class="auth-error" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-icon">💬</div>
+                <h1 class="hero-title">창현이에게</h1>
+                <h2 class="hero-subtitle">하고싶은말</h2>
+                <p class="hero-description">하고 싶은 말을 자유롭게 남겨주세요</p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Guestbook Form Section -->
+            <section class="form-section">
+                <div class="section-label">WRITE MESSAGE</div>
+                <h2 class="section-title">글 남기기</h2>
+                <form id="guestbookForm" class="guestbook-form">
+                    <div id="loginRequiredMessage" class="login-required-message" style="display: none;">
+                        <p>로그인이 필요합니다. 로그인 후 방명록을 작성할 수 있습니다.</p>
+                        <button type="button" id="loginFromFormBtn" class="login-prompt-btn">로그인하기</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group form-group-name">
+                            <label for="authorName">이름</label>
+                            <input type="text" id="authorName" placeholder="이름을 입력하세요" required readonly>
+                        </div>
+                        <div class="form-group form-group-message">
+                            <label for="message">하고 싶은 말</label>
+                            <div class="message-input-wrapper">
+                                <textarea id="message" rows="3" placeholder="하고 싶은 말을 자유롭게 적어주세요..." required></textarea>
+                                <button type="submit" class="submit-btn">작성</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Guestbook List Section -->
+            <section class="list-section">
+                <div class="section-label">GUESTBOOK</div>
+                <h2 class="section-title">창현이한테 남긴 말</h2>
+                <div id="guestbookList" class="guestbook-list">
+                    <!-- 방명록 항목들이 여기에 동적으로 추가됩니다 -->
+                </div>
+                <div id="emptyState" class="empty-state">
+                    <p>아직 방명록이 없습니다.<br>첫 번째 방명록을 남겨보세요! ✨</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-info-item">
+                    <span class="footer-label">이름</span>
+                    <span class="footer-value">이창현</span>
+                </div>
+                <div class="footer-info-item">
+                    <span class="footer-label">이메일</span>
+                    <span class="footer-value">changhyun@changhyun.com</span>
+                </div>
+                <div class="footer-info-item">
+                    <span class="footer-label">전화번호</span>
+                    <span class="footer-value">010-9903-7949</span>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2024 이창현. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getDatabase, ref, push, set, update, onValue, remove, orderByChild, query as rtdbQuery, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA40_T5wp_ADC1x_XXk7kqvSzkq07utfu4",
+            authDomain: "talking-df564.firebaseapp.com",
+            projectId: "talking-df564",
+            storageBucket: "talking-df564.firebasestorage.app",
+            messagingSenderId: "842436752280",
+            appId: "1:842436752280:web:65ed5b871366b07d4a71ed",
+            measurementId: "G-M1GNKNE8FR",
+            databaseURL: "https://talking-df564-default-rtdb.firebaseio.com/"
+        };
+
+        // Initialize Firebase
+        try {
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+            const db = getDatabase(app);
+            
+            // Authentication 초기화 (에러 처리 포함)
+            let auth;
+            try {
+                auth = getAuth(app);
+                console.log('Firebase Authentication 초기화 성공');
+            } catch (authError) {
+                console.error('Firebase Authentication 초기화 실패:', authError);
+                alert('Firebase Authentication 설정 오류입니다.\n\nFirebase 콘솔에서 Authentication을 활성화해주세요:\n1. Firebase 콘솔 접속\n2. Authentication 메뉴 클릭\n3. "시작하기" 버튼 클릭\n4. "이메일/비밀번호" 인증 방법 활성화');
+                auth = null;
+            }
+
+            // Firebase를 전역으로 사용할 수 있도록 설정
+            window.firebaseApp = app;
+            window.firebaseDb = db;
+            window.firebaseAuth = auth;
+            window.firebaseFunctions = { ref, push, set, update, onValue, remove, orderByChild, rtdbQuery, get };
+            window.authFunctions = { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged };
+            console.log('Firebase 초기화 완료 (Database + Authentication)');
+        } catch (error) {
+            console.error('Firebase 초기화 실패:', error);
+            alert('Firebase 초기화에 실패했습니다. 페이지를 새로고침해주세요.');
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
